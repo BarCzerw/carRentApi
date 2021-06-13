@@ -26,11 +26,11 @@ public class CarManager {
     }
 
     public List<Car> getAvailableCars() {
-        return getAllCars().stream().filter(Car::isAvailable).collect(Collectors.toList());
+        return getAllCars().stream().filter(car -> car.getCarStatus().isAvailable()).collect(Collectors.toList());
     }
 
     public List<Car> getUnrentedCars() {
-        return getAvailableCars().stream().filter(car -> !car.isRented()).collect(Collectors.toList());
+        return getAvailableCars().stream().filter(car -> !car.getCarStatus().isRented()).collect(Collectors.toList());
     }
 
     public CarDTO getCarById(long id) throws CarNotFound {
@@ -44,7 +44,7 @@ public class CarManager {
 
     public void rentCar(long id) throws CarNotFound, CarAlreadyRented {
         CarDTO carDTO = getCarById(id);
-        if (!carDTO.isRented()) {
+        if (!carDTO.getCarStatus().isRented()) {
             editCarRentStatus(id, true);
         } else {
             throw new CarAlreadyRented();
@@ -53,7 +53,7 @@ public class CarManager {
 
     public void returnCar(long id) throws CarNotFound, CarNotRented {
         CarDTO carDTO = getCarById(id);
-        if (carDTO.isRented()) {
+        if (carDTO.getCarStatus().isRented()) {
             editCarRentStatus(id, false);
         } else {
             throw new CarNotRented();
@@ -62,7 +62,7 @@ public class CarManager {
 
     private void editCarRentStatus(long id, boolean newRentStatus) throws CarNotFound {
         CarDTO carDTO = getCarById(id);
-        carDTO.setRented(newRentStatus);
+        carDTO.getCarStatus().setRented(newRentStatus);
         carRepository.save(new Car(carDTO));
     }
 }

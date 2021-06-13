@@ -1,6 +1,7 @@
 package com.sda.carrentapi.dto;
 
 import com.sda.carrentapi.model.Car;
+import com.sda.carrentapi.model.CarStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,9 +14,8 @@ public class CarDTO {
     private Long id;
     private String manufacturer;
     private String model;
-    private String productionYear;
-    private boolean isAvailable;
-    private boolean isRented;
+    private Integer productionYear;
+    private CarStatus carStatus;
 
     public CarDTO(Car car) {
         setByCar(car);
@@ -26,7 +26,6 @@ public class CarDTO {
         this.manufacturer = car.getManufacturer();
         this.model = car.getModel();
         this.productionYear = car.getProductionYear();
-        this.isAvailable = car.isAvailable();
-        this.isRented = car.isRented();
+        this.carStatus = car.getCarStatus();
     }
 }
